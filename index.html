@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aerospace Quality Control Dashboard — Aviation safety analytics, SPC analysis, RCCA workflows, and supplier quality intelligence powered by NTSB aviation data.">
+  <title>AeroQuality Analytics | Aerospace Quality Control Dashboard</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="header-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">AeroQuality Analytics</div>
+          <div class="brand-subtitle">Aerospace Quality Control Dashboard by Jose D.</div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="data-source">
+          <span>Source: NTSB Aviation Safety Data</span>
+        </div>
+        <span id="headerDateRange">2019 - 2026</span>
+        <span id="headerEventCount">-- events loaded</span>
+      </div>
+    </div>
+
+    <nav class="nav-bar" id="mainNav">
+      <div class="nav-item active" data-view="executive">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Executive Summary
+      </div>
+      <div class="nav-item" data-view="spc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        SPC Analysis
+      </div>
+      <div class="nav-item" data-view="rcca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Root Cause Analysis
+      </div>
+      <div class="nav-item" data-view="suppliers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Supplier Scorecards
+      </div>
+      <div class="nav-item" data-view="ncr">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        NCR 8D Simulator
+      </div>
+      <div class="nav-item" data-view="trends">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        Defect Trends
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- ========== VIEW 1: EXECUTIVE SUMMARY ========== -->
+    <section class="view active" id="view-executive">
+      <div class="view-header">
+        <h1 class="view-title">Executive Summary <span class="info-icon" data-tooltip="Compliant with AS9100 Rev D Clause 9.1">i</span></h1>
+        <p class="view-description">High-level quality metrics and safety performance indicators derived from NTSB aviation incident data. All figures represent actual reported events across the U.S. aviation fleet.</p>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="grid-4" id="kpiCards">
+        <!-- Populated by JS -->
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Charts Row -->
+      <div class="grid-2" style="margin-bottom: var(--space-lg);">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Incidents by Year</span>
+            <span class="card-subtitle">Annual trend</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 260px;">
+              <canvas id="chartYearlyTrend"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Severity Distribution</span>
+            <span class="card-subtitle">Injury classification breakdown</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 260px;">
+              <canvas id="chartSeverityDist"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2-1">
+        <!-- Top Defect Categories (Pareto) -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Top Defect Categories by ATA System</span>
+            <span class="card-subtitle">Pareto analysis</span>
+          </div>
+          <div class="card-body">
+            <div class="pareto-list" id="paretoATAList">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase of Flight -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Phase of Flight</span>
+            <span class="card-subtitle">Event distribution</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 280px;">
+              <canvas id="chartPhaseOfFlight"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Top Manufacturers Table -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Top Manufacturers by Event Volume</span>
+          <span class="card-subtitle">Fleet-wide incident summary</span>
+        </div>
+        <div class="card-body" style="padding: 0;">
+          <div style="overflow-x: auto;">
+            <table class="data-table" id="execMfrTable">
+              <thead>
+                <tr>
+                  <th>Manufacturer</th>
+                  <th>Total Events</th>
+                  <th>Fatal</th>
+                  <th>Serious</th>
+                  <th>Minor</th>
+                  <th>Severity Score</th>
+                  <th>Trend</th>
+                  <th>Risk Rating</th>
+                </tr>
+              </thead>
+              <tbody id="execMfrTableBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 2: SPC ANALYSIS ========== -->
+    <section class="view" id="view-spc">
+      <div class="view-header">
+        <h1 class="view-title">Statistical Process Control <span class="info-icon" data-tooltip="Compliant with AS9103 Variation Management">i</span></h1>
+        <p class="view-description">Control charts monitoring monthly defect rates with UCL/LCL calculated at 3-sigma. Points outside control limits or violating Western Electric rules are flagged for investigation.</p>
+      </div>
+
+      <!-- SPC Statistics -->
+      <div class="spc-stats" id="spcStats">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Sub-tabs -->
+      <div class="tab-pills" id="spcTabs">
+        <div class="tab-pill active" data-spc-tab="individuals">Individuals Chart (I-Chart)</div>
+        <div class="tab-pill" data-spc-tab="mr">Moving Range (MR Chart)</div>
+        <div class="tab-pill" data-spc-tab="pchart">Attribute Chart (p-Chart)</div>
+      </div>
+
+      <!-- I-Chart -->
+      <div class="card" id="spcPanel-individuals">
+        <div class="card-header">
+          <span class="card-title">Individuals Control Chart</span>
+          <span class="card-subtitle">Monthly incident count with 3-sigma control limits</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-container" style="height: 350px;">
+            <canvas id="chartIChart"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          Red-shaded region indicates points beyond Upper Control Limit (UCL). Blue center line represents process mean.
+        </div>
+      </div>
+
+      <!-- MR Chart -->
+      <div class="card" id="spcPanel-mr" style="display: none;">
+        <div class="card-header">
+          <span class="card-title">Moving Range Chart</span>
+          <span class="card-subtitle">Consecutive-period variation with UCL</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-container" style="height: 350px;">
+            <canvas id="chartMRChart"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          Moving range tracks the absolute difference between consecutive observations. Points above UCL indicate unusual variation.
+        </div>
+      </div>
+
+      <!-- p-Chart -->
+      <div class="card" id="spcPanel-pchart" style="display: none;">
+        <div class="card-header">
+          <span class="card-title">p-Chart — Proportion of Severity Events</span>
+          <span class="card-subtitle">Fraction of events with injury severity Fatal or Serious</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-container" style="height: 350px;">
+            <canvas id="chartPChart"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          p-Chart monitors the proportion of high-severity events per period. Control limits are based on the binomial distribution.
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Process Capability Summary -->
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Process Capability</span>
+          </div>
+          <div class="card-body" id="processCapability">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Western Electric Rules</span>
+          </div>
+          <div class="card-body" id="weRulesResults">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Out-of-Control Summary</span>
+          </div>
+          <div class="card-body" id="oocSummary">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 3: ROOT CAUSE ANALYSIS ========== -->
+    <section class="view" id="view-rcca">
+      <div class="view-header">
+        <h1 class="view-title">Root Cause Corrective Action (RCCA) <span class="info-icon" data-tooltip="Compliant with AS9136 RCA and Problem Solving">i</span></h1>
+        <p class="view-description">Systematic analysis of contributing factors using Ishikawa diagrams, 5-Why methodology, and Pareto analysis of findings from NTSB investigation data.</p>
+      </div>
+
+      <!-- Sub-tabs -->
+      <div class="tab-pills" id="rccaTabs">
+        <div class="tab-pill active" data-rcca-tab="fishbone">Ishikawa Diagram</div>
+        <div class="tab-pill" data-rcca-tab="fivewhy">5-Why Analysis</div>
+        <div class="tab-pill" data-rcca-tab="pareto">Contributing Factors Pareto</div>
+      </div>
+
+      <!-- Fishbone -->
+      <div id="rccaPanel-fishbone">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Ishikawa (Fishbone) Diagram</span>
+            <span class="card-subtitle">Root cause categories from NTSB findings</span>
+          </div>
+          <div class="card-body">
+            <div class="fishbone-container" id="fishboneContainer">
+              <!-- SVG rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Category Breakdown -->
+        <div class="grid-2" style="margin-top: var(--space-lg);">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Root Cause Category Distribution</span>
+            </div>
+            <div class="card-body">
+              <div class="chart-container" style="height: 280px;">
+                <canvas id="chartRCCategory"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Category by ATA System</span>
+            </div>
+            <div class="card-body">
+              <div class="chart-container" style="height: 280px;">
+                <canvas id="chartCategoryATA"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5-Why -->
+      <div id="rccaPanel-fivewhy" style="display: none;">
+        <div class="filter-bar">
+          <span class="filter-label">Case Study</span>
+          <select class="select-control" id="fiveWhyCase">
+            <option value="0">Landing Gear Retraction Failure — Boeing 737-800</option>
+            <option value="1">Engine Turbine Blade FOD Event — CFM56-7B</option>
+          </select>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">5-Why Root Cause Drill-Down</span>
+            <span class="card-subtitle" id="fiveWhyCaseTitle">Based on NTSB investigation findings</span>
+          </div>
+          <div class="card-body">
+            <div class="five-why-container" id="fiveWhyContainer">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pareto -->
+      <div id="rccaPanel-pareto" style="display: none;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Contributing Factors — Pareto Analysis</span>
+            <span class="card-subtitle">Top 15 root causes ranked by frequency</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 400px;">
+              <canvas id="chartParetoRC"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 4: SUPPLIER SCORECARDS ========== -->
+    <section class="view" id="view-suppliers">
+      <div class="view-header">
+        <h1 class="view-title">Supplier / Manufacturer Performance Scorecards <span class="info-icon" data-tooltip="Compliant with AS9100 Rev D Clause 8.4">i</span></h1>
+        <p class="view-description">Comparative quality performance metrics for aircraft and engine manufacturers. Risk ratings are derived from incident frequency, severity weighting, and year-over-year trend analysis.</p>
+      </div>
+
+      <!-- Filter -->
+      <div class="filter-bar">
+        <span class="filter-label">Sort By</span>
+        <select class="select-control" id="supplierSort">
+          <option value="events">Total Events</option>
+          <option value="severity">Severity Score</option>
+          <option value="risk">Risk Rating</option>
+        </select>
+        <span class="filter-label" style="margin-left: var(--space-lg);">Filter Risk</span>
+        <select class="select-control" id="supplierRiskFilter">
+          <option value="all">All Ratings</option>
+          <option value="Critical">Critical</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+
+      <!-- Scorecard Table -->
+      <div class="card">
+        <div class="card-body" style="padding: 0;">
+          <div style="overflow-x: auto;">
+            <table class="data-table" id="supplierTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Manufacturer</th>
+                  <th>Models</th>
+                  <th>Total Events</th>
+                  <th>Fatal</th>
+                  <th>Serious</th>
+                  <th>Destroyed</th>
+                  <th>Severity Score</th>
+                  <th>Trend</th>
+                  <th>FAIR FPY % <span class="info-icon" data-tooltip="AS9102 First Article Inspection Report First Pass Yield" style="margin-left: 4px;">i</span></th>
+                  <th>Risk Rating</th>
+                </tr>
+              </thead>
+              <tbody id="supplierTableBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Supplier Detail -->
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Manufacturer Trend Comparison</span>
+            <span class="card-subtitle">Annual incidents — top 5 manufacturers</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 300px;">
+              <canvas id="chartMfrTrend"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Risk Rating Distribution</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 300px;">
+              <canvas id="chartRiskDist"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Supplier Corrective Action (SCAR) Aging</span>
+            <span class="card-subtitle">Days open across supply base</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 300px;">
+              <canvas id="chartSCARAging"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Supplier Drill-down -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Supplier Detail Drill-Down</span>
+          <div>
+            <select class="select-control" id="supplierDrilldown">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="grid-2" id="supplierDrilldownContent">
+            <div>
+              <h3 style="font-size: 0.9rem; margin-bottom: var(--space-md); color: var(--text-primary);">Defect Types (ATA System)</h3>
+              <div class="chart-container" style="height: 250px;">
+                <canvas id="chartSupplierATA"></canvas>
+              </div>
+            </div>
+            <div>
+              <h3 style="font-size: 0.9rem; margin-bottom: var(--space-md); color: var(--text-primary);">Root Cause Categories</h3>
+              <div class="chart-container" style="height: 250px;">
+                <canvas id="chartSupplierRC"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 5: NCR 8D SIMULATOR ========== -->
+    <section class="view" id="view-ncr">
+      <div class="view-header">
+        <h1 class="view-title">Non-Conformance Report — 8D Problem Solving Simulator <span class="info-icon" data-tooltip="Compliant with AS9145 APQP / PPAP">i</span></h1>
+        <p class="view-description">Interactive walkthrough of the 8 Disciplines methodology applied to real aerospace quality case studies. Each discipline demonstrates structured problem resolution from team formation through systemic prevention.</p>
+      </div>
+
+      <!-- Case Selection -->
+      <div class="filter-bar">
+        <span class="filter-label">Select Case Study</span>
+        <select class="select-control" id="ncrCaseSelect">
+          <option value="0">CS-001: Landing Gear Retraction Failure — Boeing 737-800</option>
+          <option value="1">CS-002: Engine Turbine Blade FOD Event — CFM56-7B</option>
+        </select>
+      </div>
+
+      <!-- Case Summary -->
+      <div class="case-card" id="ncrCaseSummary">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- 8D Layout -->
+      <div class="eight-d-container">
+        <div class="eight-d-sidebar">
+          <div class="eight-d-steps" id="eightDSteps">
+            <div class="eight-d-step-nav active" data-step="0">
+              <span class="step-indicator">D1</span>
+              <span>Establish Team</span>
+            </div>
+            <div class="eight-d-step-nav" data-step="1">
+              <span class="step-indicator">D2</span>
+              <span>Define Problem</span>
+            </div>
+            <div class="eight-d-step-nav" data-step="2">
+              <span class="step-indicator">D3</span>
+              <span>Containment</span>
+            </div>
+            <div class="eight-d-step-nav" data-step="3">
+              <span class="step-indicator">D4</span>
+              <span>Root Cause</span>
+            </div>
+            <div class="eight-d-step-nav" data-step="4">
+              <span class="step-indicator">D5</span>
+              <span>Corrective Actions</span>
+            </div>
+            <div class="eight-d-step-nav" data-step="5">
+              <span class="step-indicator">D6</span>
+              <span>Verification</span>
+            </div>
+            <div class="eight-d-step-nav" data-step="6">
+              <span class="step-indicator">D7</span>
+              <span>Prevention</span>
+            </div>
+            <div class="eight-d-step-nav" data-step="7">
+              <span class="step-indicator">D8</span>
+              <span>Closure</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eight-d-main">
+          <div class="card">
+            <div class="card-body" id="eightDContent">
+              <!-- Populated by JS -->
+            </div>
+            <div class="card-footer">
+              <div class="eight-d-nav-buttons">
+                <button class="btn" id="eightDPrev" disabled>Previous</button>
+                <span id="eightDProgress" style="font-size: 0.8rem; color: var(--text-secondary);">Step 1 of 8</span>
+                <button class="btn btn-primary" id="eightDNext">Next Step</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 6: DEFECT TRENDS ========== -->
+    <section class="view" id="view-trends">
+      <div class="view-header">
+        <h1 class="view-title">Defect Dispositioning and Trend Analysis</h1>
+        <p class="view-description">Longitudinal analysis of defect patterns by ATA system code, severity weighting, and predictive trend projections for proactive quality management.</p>
+      </div>
+
+      <!-- Filter -->
+      <div class="filter-bar">
+        <span class="filter-label">ATA Category</span>
+        <select class="select-control" id="trendATAFilter">
+          <option value="all">All Categories</option>
+          <!-- Populated by JS -->
+        </select>
+        <span class="filter-label" style="margin-left: var(--space-lg);">Severity</span>
+        <select class="select-control" id="trendSeverityFilter">
+          <option value="all">All Severities</option>
+          <option value="Fatal">Fatal</option>
+          <option value="Serious">Serious</option>
+          <option value="Minor">Minor</option>
+          <option value="None">None</option>
+        </select>
+      </div>
+
+      <!-- Main Trend Chart -->
+      <div class="card" style="margin-bottom: var(--space-lg);">
+        <div class="card-header">
+          <span class="card-title">Defect Trend Over Time</span>
+          <span class="card-subtitle">Monthly incident count with 3-period moving average</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-container" style="height: 350px;">
+            <canvas id="chartDefectTrend"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: var(--space-lg);">
+        <!-- Severity Weighted Score -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Severity-Weighted Defect Score</span>
+            <span class="card-subtitle">Fatal=10, Serious=5, Minor=2, None=0.5</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 280px;">
+              <canvas id="chartSeverityScore"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATA Category Heatmap -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Top ATA Categories — Yearly Heatmap</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 280px;">
+              <canvas id="chartATAHeatmap"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Defect Rate by Damage Level -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Aircraft Damage Distribution</span>
+            <span class="card-subtitle">Annual breakdown by damage level</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 280px;">
+              <canvas id="chartDamageTrend"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Defect Dispositioning Summary</span>
+            <span class="card-subtitle">Current period classification</span>
+          </div>
+          <div class="card-body" id="dispositioningSummary">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="app-footer">
+    <p>AeroQuality Analytics — Aerospace Quality Control Dashboard</p>
+    <p style="margin-top: 4px;">Data modeled on NTSB Aviation Safety Database patterns. Built for portfolio demonstration of Supplier Quality Engineering competencies.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
