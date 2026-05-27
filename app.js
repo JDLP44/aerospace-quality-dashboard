@@ -1,5 +1,5 @@
 // ============================================================
-// Aerospace Quality Control Dashboard — Application Module
+// Aerospace Quality Control Dashboard â€” Application Module
 // Routing, view management, interactivity, and data binding
 // ============================================================
 
@@ -603,7 +603,7 @@
       <div class="case-card-header">
         <div>
           <div class="case-card-title">${cs.title}</div>
-          <div class="case-card-meta">Case ${cs.id} | ATA ${cs.ataCode} — ${DATA.lookups.ataCodes[cs.ataCode]} | Severity: ${cs.severity}</div>
+          <div class="case-card-meta">Case ${cs.id} | ATA ${cs.ataCode} â€” ${DATA.lookups.ataCodes[cs.ataCode]} | Severity: ${cs.severity}</div>
         </div>
         <span class="badge badge-${cs.severity === 'Fatal' ? 'critical' : cs.severity === 'Serious' ? 'high' : 'medium'}">${cs.severity}</span>
       </div>
@@ -626,41 +626,41 @@
 
     const steps = [
       {
-        title: 'D1 — Establish the Team',
+        title: 'D1 â€” Establish the Team',
         body: `<p>A cross-functional team has been assembled with the expertise required to address this non-conformance:</p>
                <ul>${cs.d1_team.map(m => `<li>${m}</li>`).join('')}</ul>
                <p style="margin-top: var(--space-md); color: var(--text-tertiary); font-size: 0.8rem;">Team composition follows AS9145 requirements for PPAP/8D problem resolution.</p>`
       },
       {
-        title: 'D2 — Define the Problem',
+        title: 'D2 â€” Define the Problem',
         body: `<p>${cs.d2_problem}</p>`
       },
       {
-        title: 'D3 — Implement Interim Containment Actions',
+        title: 'D3 â€” Implement Interim Containment Actions',
         body: `<p>The following containment actions have been implemented to protect the customer from further exposure to non-conforming product:</p>
                <ul>${cs.d3_containment.map(a => `<li>${a}</li>`).join('')}</ul>`
       },
       {
-        title: 'D4 — Determine Root Cause',
+        title: 'D4 â€” Determine Root Cause',
         body: `<p>${cs.d4_rootCause}</p>`
       },
       {
-        title: 'D5 — Develop Permanent Corrective Actions',
+        title: 'D5 â€” Develop Permanent Corrective Actions',
         body: `<p>The following permanent corrective actions have been developed and are being implemented:</p>
                <ul>${cs.d5_corrective.map(a => `<li>${a}</li>`).join('')}</ul>`
       },
       {
-        title: 'D6 — Implement and Verify Corrective Actions',
+        title: 'D6 â€” Implement and Verify Corrective Actions',
         body: `<p>Verification activities confirm the effectiveness of corrective actions:</p>
                <ul>${cs.d6_verification.map(a => `<li>${a}</li>`).join('')}</ul>`
       },
       {
-        title: 'D7 — Prevent Recurrence (Systemic Actions)',
+        title: 'D7 â€” Prevent Recurrence (Systemic Actions)',
         body: `<p>Systemic preventive actions to ensure the root cause cannot recur across the supplier base:</p>
                <ul>${cs.d7_prevention.map(a => `<li>${a}</li>`).join('')}</ul>`
       },
       {
-        title: 'D8 — Closure and Team Recognition',
+        title: 'D8 â€” Closure and Team Recognition',
         body: `<p>${cs.d8_recognition}</p>
                <div style="margin-top: var(--space-lg); padding: var(--space-lg); background: var(--accent-green-dim); border-radius: var(--radius-md); border-left: 3px solid var(--accent-green);">
                  <p style="color: var(--accent-green); font-weight: 600; margin-bottom: var(--space-sm);">8D Report Complete</p>
@@ -738,7 +738,7 @@
     ataCodes.forEach(([code, desc]) => {
       const opt = document.createElement('option');
       opt.value = code;
-      opt.textContent = `ATA ${code} — ${desc}`;
+      opt.textContent = `ATA ${code} â€” ${desc}`;
       select.appendChild(opt);
     });
   }

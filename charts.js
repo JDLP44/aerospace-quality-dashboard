@@ -1,5 +1,5 @@
 // ============================================================
-// Aerospace Quality Control Dashboard — Charts Module
+// Aerospace Quality Control Dashboard â€” Charts Module
 // Chart.js configurations and rendering functions
 // ============================================================
 
@@ -94,7 +94,7 @@ function renderYearlyTrendChart(data) {
           callbacks: {
             afterLabel: function(ctx) {
               const yr = years[ctx.dataIndex];
-              if (parseInt(yr) === 2026) return '(Partial year — through May)';
+              if (parseInt(yr) === 2026) return '(Partial year â€” through May)';
               return '';
             }
           }
@@ -490,7 +490,7 @@ function renderCategoryATAChart(data) {
           callbacks: {
             title: function(ctx) {
               const item = top10[ctx[0].dataIndex];
-              return `ATA ${item.ataCode} — ${item.ataDesc}`;
+              return `ATA ${item.ataCode} â€” ${item.ataDesc}`;
             },
             afterLabel: function(ctx) {
               return 'Category: ' + top10[ctx.dataIndex].category;
@@ -672,7 +672,7 @@ function renderSupplierATAChart(mfrData) {
           callbacks: {
             title: function(ctx) {
               const code = ataCodes[ctx[0].dataIndex][0];
-              return 'ATA ' + code + ' — ' + (window.AEROSPACE_DATA.lookups.ataCodes[code] || '');
+              return 'ATA ' + code + ' â€” ' + (window.AEROSPACE_DATA.lookups.ataCodes[code] || '');
             }
           }
         }
@@ -875,7 +875,7 @@ function renderATAHeatmapChart(data) {
           callbacks: {
             title: function(ctx) {
               const ata = topATA[ctx[0].datasetIndex];
-              return 'ATA ' + ata + ' — ' + (data.lookups.ataCodes[ata] || '');
+              return 'ATA ' + ata + ' â€” ' + (data.lookups.ataCodes[ata] || '');
             }
           }
         }

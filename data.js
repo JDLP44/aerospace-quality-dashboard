@@ -1,5 +1,5 @@
 // ============================================================
-// Aerospace Quality Control Dashboard — Data Module
+// Aerospace Quality Control Dashboard â€” Data Module
 // Realistic aerospace quality data modeled on NTSB patterns
 // ============================================================
 
@@ -20,7 +20,7 @@ const ATA_CODES = {
   '56': 'Windows',
   '57': 'Wings',
   '71': 'Powerplant',
-  '72': 'Engine — Turbine',
+  '72': 'Engine â€” Turbine',
   '73': 'Engine Fuel & Control',
   '74': 'Ignition',
   '76': 'Engine Controls',
@@ -395,7 +395,7 @@ function generateFindings(events) {
 const CASE_STUDIES = [
   {
     id: 'CS-001',
-    title: 'Landing Gear Retraction Failure — Boeing 737-800',
+    title: 'Landing Gear Retraction Failure â€” Boeing 737-800',
     ataCode: '32',
     severity: 'Serious',
     rpn: 240,
@@ -434,7 +434,7 @@ const CASE_STUDIES = [
   },
   {
     id: 'CS-002',
-    title: 'Engine Turbine Blade FOD Event — CFM56-7B',
+    title: 'Engine Turbine Blade FOD Event â€” CFM56-7B',
     ataCode: '72',
     severity: 'Serious',
     rpn: 320,
