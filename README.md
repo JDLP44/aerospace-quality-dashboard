@@ -8,7 +8,7 @@ A professional, data-driven web dashboard demonstrating core Supplier Quality En
 
 ## Live Dashboard
 
-> Open `index.html` in any modern browser, or deploy to GitHub Pages.
+> **[View Live Dashboard](https://JDLP44.github.io/aerospace-quality-dashboard/)**
 
 ---
 
